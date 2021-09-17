@@ -7,7 +7,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 const SCREEN_SIZE = Dimensions.get('screen').width;
 
 const GlutenFreeFoodScreen = () => {
-  const foods = useSelector(state => state.counter);
+  const foods = useSelector(state => state.counter.arr);
 
   if (foods.length === 0) {
     return null;

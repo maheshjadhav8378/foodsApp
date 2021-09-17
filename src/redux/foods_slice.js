@@ -1,17 +1,22 @@
 import {createSlice, createAsyncThunk} from '@reduxjs/toolkit';
 import axios from 'axios';
 
-const URL = 'http://localhost:3000/foods';
+const URL = 'http://localhost:3000/foods' + '';
 
-const initialState = [];
+const initialState = {arr: [], error: null};
 
-export const fetchFoods = createAsyncThunk('counter/fetchFoods', async () => {
-  const response = await axios.get(URL);
-  // console.log('dat ------------- data', response.data);
-  const data = response.data;
-  // console.log(data);
-  return data;
-});
+export const fetchFoods = createAsyncThunk(
+  'counter/fetchFoods',
+  async (args, thunkAPI) => {
+    try {
+      const response = await axios.get(URL);
+      const data = response.data;
+      return data;
+    } catch (err) {
+      return thunkAPI.rejectWithValue(err.message);
+    }
+  },
+);
 
 export const counterSlice = createSlice({
   name: 'counter',
@@ -20,7 +25,10 @@ export const counterSlice = createSlice({
   extraReducers: builder => {
     builder.addCase(fetchFoods.fulfilled, (state, action) => {
       // console.log('calling reducer', action.payload);
-      state.push(...action.payload);
+      state.arr.push(...action.payload);
+    });
+    builder.addCase(fetchFoods.rejected, (state, action) => {
+      state.error = action.payload;
     });
   },
 });
