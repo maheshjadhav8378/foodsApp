@@ -6,21 +6,19 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const SCREEN_SIZE = Dimensions.get('screen').width;
 
-const VeganFoodScreen = () => {
+const AllFoodsScreen = () => {
   const foods = useSelector(state => state.counter);
 
   if (foods.length === 0) {
     return null;
   }
-  const filteredFoods = foods.filter(food => {
-    return food.isVegan;
-  });
-
-  // console.log(foods);
 
   return (
     <FlatList
-      data={filteredFoods}
+      data={foods}
+      keyExtractor={(item, index) =>
+        item.title + index.toString() + Math.random().toString()
+      }
       renderItem={({item}) => {
         // console.log('foods', foods);
         return (
@@ -42,7 +40,7 @@ const VeganFoodScreen = () => {
               </Text>
               <Ionicons
                 name={
-                  item.isVegan
+                  item.isGlutenFree && item.isVegan
                     ? 'checkmark-circle-outline'
                     : 'add-circle-outline'
                 }
@@ -60,4 +58,4 @@ const VeganFoodScreen = () => {
   );
 };
 
-export default VeganFoodScreen;
+export default AllFoodsScreen;
